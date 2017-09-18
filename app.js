@@ -3,20 +3,6 @@ var app = express();
 var mysql = require('mysql');
 var port = process.env.PORT || 8080;  // set our port
 
-//DB CONNECT - already connected
-
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "contacts_db"
-});
-
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");   
-});
-
 
 //DEPENDENCIES - call the packages we need
 //For POST requests
