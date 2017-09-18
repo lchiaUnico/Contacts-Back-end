@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.route('/contacts')
 //Get all contacts
 	.get(function (req, res) {
-	  	var sql = "SELECT * FROM contacts";
+	  	var sql = "SELECT firstName, lastName FROM contacts";
 	  	con.query(sql, function (err, result, fields) {
 		    JSON.stringify(result);
 		    console.log(result);
@@ -38,37 +38,52 @@ app.route('/contact/:id')
 	});
 
 app.route('/contact/create')
-//Get contact by id
+//Add contact by id
 	.post(function (req, res) {
 		var contact = {
 	        id: req.body.id,
 	        firstName: req.body.firstName,
 	        lastName: req.body.lastName,
 	        workPhone: req.body.workPhone,
-	        mobile: req.body.mobile,
+	        mobile: req.body.mobile
    	 	};
    	 	
 		console.log (contact);
 		var sql = "INSERT INTO contacts SET ?";
 		con.query(sql, contact, function (err, result, fields) {
  	 	if (err) throw err;
- 	  	console.log('Done!!')
+ 	  	console.log('Created!!');
+ 	  	res.send('Created!!');
+
  	  });
 	});
-
-
-
 
 app.route('/contact/delete')
 //Delete contact by id
 	.delete(function (req, res) {
 	  	var sql = "DELETE FROM contacts WHERE id = ?";
-	  	con.query(sql,req.body.id, function (err, result, fields) {
+	  	con.query(sql,req.body.id, function (err, result, fields) { 
 	  		if (err) throw err;
-		  res.send('DONE!!');
+		  res.send('Deleted!!');
 	  	});
 	});
 	
+app.route('/contact/update')
+//Update contact by id
+	.put(function (req, res) {
+		var contact = {
+			id: req.body.id,
+	        firstName: req.body.firstName,
+	        lastName: req.body.lastName,
+	        workPhone: req.body.workPhone,
+	        mobile: req.body.mobile
+   	 	};
+	  	var sql = "UPDATE contacts SET ? WHERE id = ?";
+	  	con.query(sql,[contact, req.body.id], function (err, result, fields) {
+	  		if (err) throw err;
+		  res.send('Updated!!');
+	  	});
+	});
 
 app.listen(port)
 console.log("Server is running at localhost:" + port);
