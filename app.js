@@ -2,7 +2,7 @@ var express = require('express')
 var app = express();
 var mysql = require('mysql');
 var uuid = require('uuid');
-var port = process.env.PORT || 8080;  // set our port
+var port = process.env.PORT || 7777;  // set our port
 
 //connect to the database
 
@@ -52,9 +52,8 @@ app.route('/contact/:uuid')
 	});
 
 app.route('/contact/create')
-//Get contact by id
+//Create contact by id
 	.post(function (req, res) {
-		console.log(req.body);
 		var contact = {
 			uuid: uuid(),
 	        firstName: req.body.firstName,
@@ -63,12 +62,12 @@ app.route('/contact/create')
 	        mobile: req.body.mobile
    	 	};
    	 	
-		//console.log (contact);
-		// var sql = "INSERT INTO contacts SET ?";
-		// con.query(sql, contact, function (err, result, fields) {
- 	//  	if (err) throw err;
- 	//   	console.log(result);
- 	  //});
+		var sql = "INSERT INTO contacts SET ?";
+		con.query(sql, contact, function (err, result, fields) {
+ 			if (err) throw err;
+ 			console.log(result);
+ 			res.send(contact.uuid);
+ 	  	});
 	});
 
 app.route('/contact/update/:uuid')
@@ -81,10 +80,11 @@ app.route('/contact/update/:uuid')
 	        mobile: req.body.mobile
    	 	};
 
+   	 	console.log (contact);
 		var sql = "Update contacts SET ? WHERE uuid = ?";
 	  	con.query(sql, [contact, req.params.uuid], function (err, result, fields) {
 	  		if (err) throw err;
-		  res.send('DONE!!');
+		  res.send(req.params.uuid);
 	  	});
 	});
 
