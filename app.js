@@ -98,23 +98,6 @@ app.route('/contact/delete/:uuid')
 		  res.send('DONE!!');
 	  	});
 	});
-	
-app.route('/contact/update')
-//Update contact by id
-	.put(function (req, res) {
-		var contact = {
-			id: req.body.id,
-	        firstName: req.body.firstName,
-	        lastName: req.body.lastName,
-	        workPhone: req.body.workPhone,
-	        mobile: req.body.mobile
-   	 	};
-	  	var sql = "UPDATE contacts SET ? WHERE id = ?";
-	  	con.query(sql,[contact, req.body.id], function (err, result, fields) {
-	  		if (err) throw err;
-		  res.send('Updated!!');
-	  	});
-	});
 
 app.listen(port)
 console.log("Server is running at localhost:" + port);
